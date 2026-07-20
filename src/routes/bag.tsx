@@ -61,7 +61,9 @@ function BagPage() {
                     `${count} ${count === 1 ? "piece" : "pieces"} in your bag.`,
                     `${count} ${count === 1 ? "артикул" : "артикула"} в чантата ти.`,
                   )}
-            </h1>
+                  </h1><br></br>
+                  <h2>{t("Delivery is free on orders over €50.", "Доставката е безплатна на поръчка над 50 евро")}</h2> <br />
+            
           </div>
 
           {count === 0 ? (
