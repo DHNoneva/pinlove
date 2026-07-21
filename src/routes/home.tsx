@@ -87,7 +87,7 @@ function HomePage() {
           />
           <div className="space-y-6 md:pt-6">
             <h2 className="display-section">
-              {t("A quiet atelier", "Тихо ателие")}
+              {t("A quiet atelier", " Уютно ателие")}
               <br />
               {t("in Bulgaria.", "в България.")}
             </h2>
