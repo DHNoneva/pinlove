@@ -191,7 +191,7 @@
     transition-duration: 200ms;
   }
 }
-
+ 
 @keyframes fade-up {
   from {
     opacity: 0;
@@ -202,13 +202,20 @@
     transform: translateY(0);
   }
 }
-
+ 
 .animate-fade-up {
   opacity: 0;
   animation: fade-up 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
-
+ 
 .delay-1 { animation-delay: 0.1s; }
 .delay-2 { animation-delay: 0.2s; }
 .delay-3 { animation-delay: 0.5s; }
 .delay-4 { animation-delay: 0.9s; }
+ 
+.hero-viewport {
+  min-height: 640px;
+  /* Fallback for browsers/webviews (e.g. Instagram, Facebook in-app) that don't support svh */
+  height: 100vh;
+  height: 100svh;
+}

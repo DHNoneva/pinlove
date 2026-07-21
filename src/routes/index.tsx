@@ -30,6 +30,10 @@ export const Route = createFileRoute("/")({
       },
       { property: "og:url", content: "/" },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: "https://pinlove.org/images/landing-fallback.jpg" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "675" },
+      { name: "twitter:image", content: "https://pinlove.org/images/landing-fallback.jpg" },
     ],
     links: [{ rel: "canonical", href: "/" }],
     scripts: [
@@ -73,7 +77,7 @@ function Landing() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <section className="relative h-[100svh] min-h-[640px] w-full overflow-hidden">
+      <section className="hero-viewport relative w-full overflow-hidden">
         <video
           ref={videoRef}
           className="absolute inset-0 h-full w-full object-cover"
