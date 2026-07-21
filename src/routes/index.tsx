@@ -1,35 +1,64 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 
 import { LanguageToggle } from "@/components/site-shell";
 import { useT } from "@/lib/language-context";
 
 
+const SEO_TITLE =
+  "Pinlove Studio — Handmade Jewelry & Fashion Pins Bulgaria | Ръчно изработени бижута и пинове";
+const SEO_DESCRIPTION =
+  "Handmade jewelry and fashion pins from Bulgaria — earrings, bracelets, necklaces and custom pins, quietly made one at a time. Ръчно изработени бижута, обеци, гривни, колиета и фешън пинове от България.";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "pinlove.studio — Handcrafted Jewelry from Bulgaria" },
+      { title: SEO_TITLE },
       {
         name: "description",
-        content:
-          "pinlove.studio — a small Bulgarian atelier of handcrafted jewelry and fashion pins. Quietly made, one at a time.",
+        content: SEO_DESCRIPTION,
       },
-      { property: "og:title", content: "pinlove.studio — Handcrafted Jewelry from Bulgaria" },
+      {
+        name: "keywords",
+        content:
+          "handmade jewelry Bulgaria, custom fashion pins, handcrafted earrings, artisan jewelry, ръчно изработени бижута, обеци ръчна изработка, гривни ръчна изработка, колиета България, фешън пинове, поръчкови бижута",
+      },
+      { property: "og:title", content: SEO_TITLE },
       {
         property: "og:description",
-        content:
-          "A small Bulgarian atelier of handcrafted jewelry and fashion pins. Quietly made, one at a time.",
+        content: SEO_DESCRIPTION,
       },
       { property: "og:url", content: "/" },
+      { property: "og:type", content: "website" },
     ],
     links: [{ rel: "canonical", href: "/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Store",
+          name: "Pinlove Studio",
+          description: SEO_DESCRIPTION,
+          url: "https://pinlove.org",
+          address: {
+            "@type": "PostalAddress",
+            addressCountry: "BG",
+          },
+          makesOffer: [
+            { "@type": "Offer", itemOffered: { "@type": "Product", name: "Handmade earrings" } },
+            { "@type": "Offer", itemOffered: { "@type": "Product", name: "Handmade bracelets" } },
+            { "@type": "Offer", itemOffered: { "@type": "Product", name: "Handmade necklaces" } },
+            { "@type": "Offer", itemOffered: { "@type": "Product", name: "Custom fashion pins" } },
+          ],
+        }),
+      },
+    ],
   }),
   component: Landing,
 });
 
 function Landing() {
-  const easeOut = [0.22, 1, 0.36, 1] as const;
   const t = useT();
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -48,7 +77,8 @@ function Landing() {
         <video
           ref={videoRef}
           className="absolute inset-0 h-full w-full object-cover"
-          src="/videos/landing-page.mp4" 
+          src="/videos/landing-page.mp4"
+          poster="/images/landing-fallback.jpg"
           autoPlay
           loop
           muted
@@ -72,12 +102,7 @@ function Landing() {
         />
 
         {/* Top bar — logo left, atelier label right, echoing a magazine masthead */}
-        <motion.div
-          initial={{ opacity: 0, y: -12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: easeOut }}
-          className="absolute inset-x-0 top-0 z-10"
-        >
+        <div className="animate-fade-up absolute inset-x-0 top-0 z-10">
           <div className="container-shell flex items-center justify-between pt-8">
             <span className="font-serif text-2xl italic text-white">pinlove.studio</span>
             <div className="flex items-center gap-4">
@@ -87,34 +112,21 @@ function Landing() {
               <LanguageToggle className="border-white/40 text-white [&_button]:text-white/80" />
             </div>
           </div>
-        </motion.div>
+        </div>
 
         <div className="relative z-10 flex h-full flex-col items-center justify-end px-6 pb-16 text-center md:pb-24">
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.1, ease: easeOut }}
-            className="label-caps mb-6 text-white/75"
-          >
+          <p className="animate-fade-up delay-1 label-caps mb-6 text-white/75">
             {t("Handcrafted in Bulgaria", "Ръчно изработено в България")}
-          </motion.p>
+          </p>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, delay: 0.2, ease: easeOut }}
-            className="display-hero max-w-3xl text-balance"
+          <h1
+            className="animate-fade-up delay-2 display-hero max-w-3xl text-balance"
             style={{ color: "white", textShadow: "0 2px 30px rgba(0,0,0,0.35)" }}
           >
             {t("Quietly made.", "Създадено с прецизност")}
-          </motion.h1>
+          </h1>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5, ease: easeOut }}
-            className="mt-10"
-          >
+          <div className="animate-fade-up delay-3 mt-10">
             <Link
               to="/home"
               className="label-caps group inline-flex items-center gap-3 border-b border-white/50 pb-1 text-white transition-colors hover:border-white"
@@ -122,17 +134,12 @@ function Landing() {
               {t("Enter the Studio", "Влез в ателието")}
               <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
             </Link>
-          </motion.div>
+          </div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.9 }}
-          className="absolute bottom-5 left-1/2 z-10 -translate-x-1/2 text-[0.6rem] tracking-[0.3em] text-white/60 uppercase"
-        >
+        <div className="animate-fade-up delay-4 absolute bottom-5 left-1/2 z-10 -translate-x-1/2 text-[0.6rem] tracking-[0.3em] text-white/60 uppercase">
           {t("Scroll", "Скрол")}
-        </motion.div>
+        </div>
       </section>
     </div>
   );
