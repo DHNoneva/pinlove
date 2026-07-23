@@ -12,7 +12,7 @@
 //    something like "orders@pinlove.studio" for a more professional sender.
 
 export const ADMIN_EMAIL = "pinlove.studio@outlook.com";
-const FROM_EMAIL = "Pinlove Studio <onboarding@resend.dev>";
+const FROM_EMAIL = "Pinlove Studio <orders@pinlove.org>";
 
 export async function sendEmail(options: {
   to: string;
