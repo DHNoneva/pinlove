@@ -2,12 +2,16 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion, Transition, Variants } from "framer-motion";
 import { Sparkles, Hammer, ShieldCheck, Gift, ArrowRight, Compass, Eye, Heart } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 import { SiteShell } from "@/components/site-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useT } from "@/lib/language-context";
+import { submitCommissionRequest } from "@/lib/commissions.functions";
 
 export const Route = createFileRoute("/craft-your-own")({
   head: () => ({
@@ -61,13 +65,33 @@ function CraftYourOwnPage() {
   });
   const t = useT();
 
+  const submitCommissionRequestFn = useServerFn(submitCommissionRequest);
+  const mutation = useMutation({
+    mutationFn: (data: Parameters<typeof submitCommissionRequestFn>[0]["data"]) =>
+      submitCommissionRequestFn({ data }),
+    onSuccess: () => {
+      setFormSubmitted(true);
+    },
+    onError: (err: Error) => {
+      toast.error(
+        err.message ||
+          t("Something went wrong. Please try again.", "Възникна грешка. Моля, опитайте отново."),
+      );
+    },
+  });
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setFormSubmitted(true);
+    mutation.mutate({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      explanation: formData.explanation,
+    });
   };
 
   if (!mounted) return null;
@@ -255,9 +279,12 @@ Every piece is handcrafted to order, making each creation truly one of a kind.`,
                     >
                       <Button
                         type="submit"
-                        className="w-full font-light tracking-[0.15em] text-xs uppercase py-7 bg-[#1C1917] text-white rounded-[16px] hover:bg-[#2E2A27] transition-all duration-300 shadow-sm"
+                        disabled={mutation.isPending}
+                        className="w-full font-light tracking-[0.15em] text-xs uppercase py-7 bg-[#1C1917] text-white rounded-[16px] hover:bg-[#2E2A27] transition-all duration-300 shadow-sm disabled:opacity-60"
                       >
-                        {t("Start your commission", "Започни своята поръчка")}
+                        {mutation.isPending
+                          ? t("Sending…", "Изпращане…")
+                          : t("Start your commission", "Започни своята поръчка")}
                       </Button>
                     </motion.div>
                   </form>
